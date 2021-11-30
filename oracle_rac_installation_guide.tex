@@ -424,4 +424,56 @@ Acá se encuentra una partición nueva \texttt{/dev/sdb1}, si se repite este pro
 	/dev/sda  /dev/sda1  /dev/sda2  /dev/sdb  /dev/sdb1  /dev/sdc  /dev/sdc1  /dev/sdd  /dev/sdd1
 \end{lstlisting}
 
+\subsection{Configuración de Discos para ASM}
+
+Siguiente se pueden preparar los discos para su uso en \texttt{ASM}, para esto se puede utilizar el comando \texttt{oracleasm configure -i} para iniciar un programa interactivo de configuración.
+
+\begin{lstlisting}[style=mystyle,language=bash]
+	$ sudo oracleasm configure -i
+	Configuring the Oracle ASM library driver.
+
+	This will configure the on-boot properties of the Oracle ASM library
+	driver.  The following questions will determine whether the driver is
+	loaded on boot and what permissions it will have.  The current values
+	will be shown in brackets ('[]').  Hitting <ENTER> without typing an
+	answer will keep that current value.  Ctrl-C will abort.
+
+	Default user to own the driver interface []: oracle
+	Default group to own the driver interface []: oinstall
+	Start Oracle ASM library driver on boot (y/n) [n]: y
+	Scan for Oracle ASM disks on boot (y/n) [y]: y
+	Writing Oracle ASM library driver configuration: done
+\end{lstlisting}
+
+Siguiente se montará \texttt{ASM} al sistema.
+
+\begin{lstlisting}[style=mystyle,language=bash]
+	$ sudo oracleasm init
+	Creating /dev/oracleasm mount point: /dev/oracleasm
+	Loading module "oracleasm": oracleasm
+	Configuring "oracleasm" to use device physical block size
+	Mounting ASMlib driver filesystem: /dev/oracleasm
+\end{lstlisting}
+
+Con \texttt{ASM} ya montado al sistema, se puede crear un disco este, acá se utilizarán los discos que fueron formateados previamente.
+
+\begin{lstlisting}[style=mystyle,language=bash]
+	$ sudo oracleasm createdisk DISK1 /dev/sdb1
+	Writing disk header: done
+	Instantiating disk: done
+\end{lstlisting}
+
+Con el disco ya creado podemos buscarlo y listarlo.
+
+\begin{lstlisting}[style=mystyle,language=bash]
+	$ sudo oracleasm scandisks
+	Reloading disk partitions: done
+	Cleaning any stale ASM disks...
+	Scanning system for ASM disks...
+	$ oracleasm listdisks
+	DISK1
+\end{lstlisting}
+
+Solo resta iniciar la otra máquina virtual y configurar \texttt{ASM}, únicamente será necesario omitir la creación del disco.
+
 \end{document}
