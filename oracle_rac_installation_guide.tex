@@ -105,6 +105,10 @@ Se aplicará esta misma configuración manual en el siguiente adaptador disponib
 
 \section{Configuración del Sistema Operativo}
 
+El siguiente paso consiste en preparar al sistema operativo para la instalación de los componentes de Oracle Grid y Oracle DB.
+
+\subsection{Instalación de Paquetes}
+
 Una vez en el ambiente de escritorio es necesario instalar software mediante el gestor de paquetes, en este caso esta distribución se encuentra basada en RHEL así que el gestor de paquete es yum.
 
 \begin{lstlisting}[style=mystyle,language=bash]
@@ -113,5 +117,39 @@ Una vez en el ambiente de escritorio es necesario instalar software mediante el 
 	$ sudo yum install oracleasm-support
 	$ sudo yum install bind* --skip-broken
 \end{lstlisting}
+
+\subsection{Configuración de Red}
+
+Siguiente se configurara el archivo de hosts, según Verhage (2021) este archivo ubicado en \texttt{etc/host} se encarga de conectar direcciones ip con nombre de dominio.
+
+\begin{lstlisting}[style=mystyle,language=bash]
+	cat /etc/hosts
+	127.0.0.1   	localhost
+	::1         	localhost
+	127.0.1.1   	pop-os.localdomain  	pop-os
+\end{lstlisting}
+
+En este caso, al visitar la dirección \texttt{127.0.0.1}, nuestro sistema operativo le indicará al navegador que debe de navegar hacia \texttt{localhost}. Para esto se puede abrir el editor de texto predeterminado del sistema operativo, gedit, o simplemente un editor de texto de consola, en este caso vim ya viene instalado. Aca se agregaran los siguientes cambios.
+
+\begin{lstlisting}[style=mystyle,language=bash]
+	# Default
+	127.0.0.1   localhost localhost.localdomain localhost4 localhost4.localdomain4
+	::1     	localhost localhost.localdomain localhost6 localhost6.localdomain6
+	# Public
+	192.168.24.1 node1.localdomain node1
+	192.168.24.2 node2.localdomain node2
+	# Private
+	192.168.10.1 node-priv.localdomain node1-priv
+	192.168.10.2 node2-priv.localdomain node2-priv
+	# Virtual
+	192.168.24.31 node1-vip.localdomain node1-vip
+	192.168.24.32 node2-vip.localdomain node2-vip
+	# SCAN
+	192.168.24.41 node-scan.localdomain node-scan
+	192.168.24.42 node-scan.localdomain node-scan
+	192.168.24.43 node-scan.localdomain node-scan
+\end{lstlisting}
+
+Acá se esta mapeando los nombres de dominio con las redes a las cuales pertenece cada adaptador de red con el cual cuenta la máquina virtual, por esto mismo las direcciones proporcionadas se encuentran en la misma red.
 
 \end{document}
