@@ -279,4 +279,17 @@ Para la instalación de Oracle y Grid es necesario deshabilitar el firewall de n
 
 Para estas operaciones es necesario que proporcionar las credenciales del usuario sudo.
 
+\subsection{Sincronización del Reloj}
+
+Los nodos necesitan sincronizar los relojes entre sí, para esto existe el protocolo NTP (ArchWiki, n.d), entonces sera necesario habilitar este servicio en el nodo con los siguientes comandos.
+
+\begin{lstlisting}[style=mystyle,language=bash]
+	systemctl enable chronyd.service
+	systemctl restart chronyd.service
+	chronyc -a burst 4/4
+	chronyc -a makestep
+\end{lstlisting}
+
+Acá primero se habilita y reinicia el servicio de \texttt{chrony}, una implementación del protocolo NTP, mediante su proceso de fondo \texttt{chronyd}, por otro lado se modifica la configuración de \texttt{chronyc} con la línea de comando \texttt{chronyc}.
+Con el comando burst de chronyc le indicamos a chrony el mínimo de buenas medidas para sincronizar con otro nodo. Con la opción makestep le indicamos a chrony que en caso de que los nodos se encuentren desincronizados, que realice correcciones inmediatas en el nodo.
 \end{document}
