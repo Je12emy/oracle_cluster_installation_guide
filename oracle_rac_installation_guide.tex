@@ -8,6 +8,7 @@
 \usepackage{listings}
 \usepackage{xcolor}
 \usepackage{subfigure}
+\usepackage{hyperref}
 
 \definecolor{codegreen}{rgb}{0,0.6,0}
 \definecolor{codegray}{rgb}{0.5,0.5,0.5}
@@ -475,5 +476,42 @@ Con el disco ya creado podemos buscarlo y listarlo.
 \end{lstlisting}
 
 Solo resta iniciar la otra máquina virtual y configurar \texttt{ASM}, únicamente será necesario omitir la creación del disco.
+
+\subsection{Copiar el Directorio de Instalación de Grid}
+
+Siguiente es necesario descargar Grid y Oracle DB 19c, estos pueden ser descargados desde él \hyperlink{https://www.oracle.com/in/database/technologies/oracle19c-linux-downloads.html}{sitio oficial de Oracle} como zips, entonces se debe de configurar un directorio compartido entre las máquinas virtuales y el sistema operativo huésped.
+
+\begin{figure}[H]
+		\begin{center}
+			\includegraphics[width=0.95\textwidth]{vm_shared_folder.png}
+		\end{center}
+		\caption{VirtualBox Carpetas Compartidas}
+\end{figure}
+
+En este directorio compartido se deben descargar los dos zips con el software por instalar, luego en la máquina virtual se puede copia hacia el directorio \texttt{/u01/software} y se modifican los permisos sobre este.
+
+\begin{lstlisting}[style=mystyle,language=bash]
+	$ df -h 
+	Filesystem           Size  Used Avail Use% Mounted on
+	shared               916G  141G  775G  16% /media/sf_shared
+	… omitido
+	$ cd /media
+	$ sudo cp sf_shared/LINUX.X64_193000_grid_home /u01/
+	$ mkdir software
+	$ mv LINUX.X64_193000_grid_home/ software/
+	$ chown -P oracle:oinstall software/
+	$ chmod -R 775 software/ 
+	$ chown -R oracle:oinstall software/
+	$ ls -lrt 
+	total 0
+	drwxrwxr-x. 4 oracle oinstall 31 Oct 27 23:12 app
+	drwxrwxr-x. 3 oracle oinstall 40 Nov  2 21:55 software
+\end{lstlisting}
+
+\section{Instalación de Componentes de Software}
+
+Con la configuración básica es posible instalar los componentes de software de Oracle en los nodos del cluster.
+
+
 
 \end{document}
