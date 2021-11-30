@@ -292,4 +292,28 @@ Los nodos necesitan sincronizar los relojes entre sí, para esto existe el proto
 
 Acá primero se habilita y reinicia el servicio de \texttt{chrony}, una implementación del protocolo NTP, mediante su proceso de fondo \texttt{chronyd}, por otro lado se modifica la configuración de \texttt{chronyc} con la línea de comando \texttt{chronyc}.
 Con el comando burst de chronyc le indicamos a chrony el mínimo de buenas medidas para sincronizar con otro nodo. Con la opción makestep le indicamos a chrony que en caso de que los nodos se encuentren desincronizados, que realice correcciones inmediatas en el nodo.
+
+\subsection{Clonado de la Máquina Virtual}
+
+Con la configuración básica de la máquina virtual se puede clonar a la máquina virtual para crear a otro nodo en la red.
+
+\begin{figure}[H]
+	\begin{center}
+		\includegraphics[width=0.95\textwidth]{vm_clone.png}
+	\end{center}
+	\caption{Clonado de la Máquina Virtual}
+\end{figure}
+
+Con este nuevo nodo creado, puede ya ser iniciado y se cambiará su nombre o hostname a ``node2'', ya que este es el nombre es el indicado para el primer nodo al momento de configurar \texttt{/etc/hosts}, para cambiar el \texttt{hostname} de una máquina se utiliza el comando \texttt{nmcli}, primero se verificara cuál es el nombre de dominio actual.
+
+\begin{lstlisting}[style=mystyle,language=bash]
+	$ hostname
+	node1.localdomain
+	$ nmcli general hostname node2.localdomain
+	$ hostname
+	node2.localdomain
+\end{lstlisting}
+
+Con esto listo, aún tenemos que cambiar las direcciones IP en nuestras interfaces de red para que se puedan comunicar con el otro nodo en la red. Con este cambio se puede iniciar el primer nodo y hacer un \texttt{ping} entre los dos.
+
 \end{document}
