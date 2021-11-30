@@ -2,7 +2,6 @@
 \usepackage{graphicx}
 \usepackage[T1]{fontenc}
 % LTeX: language=es
-% LTeX: language=en
 \usepackage[spanish]{babel}
 \graphicspath{ {./resources/} }
 \usepackage{float}
@@ -204,7 +203,7 @@ Según Amoany (2021) podemos modificar la contraseña de un usuario con el coman
 
 \subsection{Configuración de Directorios}
 
-Siguiente se crearan los directorios necesarios para instalar el software de oracle, para esto se usara el comando mkdir, desde el directorio \texttt{root}. También se modificara al dueño del directorio y sus permisos con los comandos \texttt{chown} y \texttt{chmod}.
+Siguiente se crearan los directorios necesarios para instalar el software de oracle, para esto se usara el comando mkdir, desde el directorio \texttt{root}. También se modificará al dueño del directorio y sus permisos con los comandos \texttt{chown} y \texttt{chmod}.
 
 \begin{lstlisting}[style=mystyle,language=bash]
 	mkdir -p /u01/app/19c/grid
@@ -223,6 +222,50 @@ Entonces para verificar los permisos en este directorio se puede utilizar al com
 	drwxrwxr-x.  4 oracle oinstall   31 Oct 27 23:12 app
 \end{lstlisting}
 
-Según la ArchWiki (n.d) en la primera columna se pueden ver los permisos que sobre este directorio o archivo, en este caso el usuario tiene permisos de lectura, escritura y ejecución (rwx), los usuarios que pertenecen al grupo de el usuario actual tiene permisos de lectura, escritura y ejecución (rwx), finalmente otros usuarios solo tienen permisos de lectura y ejecución (r-x), en la tercera y cuarta columna se puede ver al usuario actual y grupo dueño de este archivo, aca el directorio actual es propiedad del usuario oracle y del grupo oinstal.
+Según la ArchWiki (n.d) en la primera columna se pueden ver los permisos que sobre este directorio o archivo, en este caso el usuario tiene permisos de lectura, escritura y ejecución (rwx), los usuarios que pertenecen al grupo del usuario actual tiene permisos de lectura, escritura y ejecución (rwx), finalmente otros usuarios solo tienen permisos de lectura y ejecución (r-x), en la tercera y cuarta columna se puede ver al usuario actual y grupo dueño de este archivo, aca el directorio actual es propiedad del usuario oracle y del grupo oinstal.
+
+\subsection{Configuración de Variables de Ambiente}
+
+Para preparar la instalación de Grid y Oracle DB, se iniciará sesión como el usuario oracle, su contraseña fue configurada previamente, acá se van a configurar varias variables de ambiente en el ambiente. Acá nuestro sistema operativo incluye bash, por lo cual podemos modificar nuestras variables de ambiente modificando el archivo \texttt{\.bash\_profile} ubicado en el directorio home, por referencia su ruta es: \texttt{/home/oracle/\.bash\_profile}. Este será modificado con los siguientes cambios:
+
+\begin{lstlisting}[style=mystyle,language=bash]
+	# Oracle Settings
+	export TMP=/tmp
+	export TMPDIR=$TMP
+	export ORACLE_BASE=/u01/app/oracle
+	export GRID_HOME=/u01/app/19c/grid
+	export DB_HOME=$ORACLE_BASE/product/19c/db_1
+	export ORACLE_HOME=$DB_HOME
+	export ORACLE_SID=node1
+	export ORACLE_TERM=xterm
+	export BASE_PATH=/usr/sbin:$PATH
+	export PATH=$ORACLE_HOME/bin:$BASE_PATH
+	export LD_LIBRARY_PATH=$ORACLE_HOME/lib:/lib:/usr/lib
+	export CLASSPATH=$ORACLE_HOME/JRE:$ORACLE_HOME/jlib:$ORACLE_HOME/rdbms/jlib
+	alias grid=’. /home/oracle/grid.env’
+	alias db=’. /home/oracle/db.env’
+\end{lstlisting}
+
+Siguiente se crearan unos cuantos archivos de ambiente, primero se creara al archivo \texttt{grid\.env} en el directorio \texttt{/home/oracle/} con el siguiente contenido.
+
+\begin{lstlisting}[style=mystyle,language=bash]
+	export ORACLE_SID=+ASM1
+	export ORACLE_HOME=$GRID_HOME
+	export PATH=$ORACLE_HOME/bin:$BASE_PATH
+	export LD_LIBRARY_PATH=$ORACLE_HOME/lib:/lib:/usr/lib
+	export CLASSPATH=$ORACLE_HOME/JRE:$ORACLE_HOME/jlib:$ORACLE_HOME/rdbms/jlib
+\end{lstlisting}
+
+Siguiente se creará al archivo \texttt{db.env} en el directorio \texttt{/home/oracle/} con el siguiente contenido.
+
+\begin{lstlisting}[style=mystyle,language=bash]
+	export ORACLE_SID=node1
+	export ORACLE_HOME=$DB_HOME
+	export PATH=$ORACLE_HOME/bin:$BASE_PATH
+	export LD_LIBRARY_PATH=$ORACLE_HOME/lib:/lib:/usr/lib
+	export CLASSPATH=$ORACLE_HOME/JRE:$ORACLE_HOME/jlib:$ORACLE_HOME/rdbms/jlib
+\end{lstlisting}
+
+Estos dos archivos incluyen las variables de ambiente tanto para Grid y Oracle DB.
 
 \end{document}
