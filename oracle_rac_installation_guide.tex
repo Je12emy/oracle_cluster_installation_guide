@@ -268,4 +268,15 @@ Siguiente se creará al archivo \texttt{db.env} en el directorio \texttt{/home/o
 
 Estos dos archivos incluyen las variables de ambiente tanto para Grid y Oracle DB.
 
+\subsection{Deshabilitar el Firewall}
+
+Para la instalación de Oracle y Grid es necesario deshabilitar el firewall de nuestro sistema operativo, es posible ponerlo en línea después de terminar con la instalación.
+
+\begin{lstlisting}[style=mystyle,language=bash]
+	systemctl stop firewalld.service
+	systemctl disable firewalld.service
+\end{lstlisting}
+
+Para estas operaciones es necesario que proporcionar las credenciales del usuario sudo.
+
 \end{document}
