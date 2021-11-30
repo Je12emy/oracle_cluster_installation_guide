@@ -152,4 +152,54 @@ En este caso, al visitar la dirección \texttt{127.0.0.1}, nuestro sistema opera
 
 Acá se esta mapeando los nombres de dominio con las redes a las cuales pertenece cada adaptador de red con el cual cuenta la máquina virtual, por esto mismo las direcciones proporcionadas se encuentran en la misma red.
 
+\subsection{Configuración de Usuarios}
+
+El uso de usuarios y grupos de usuarios permite restringir el acceso de estos sobre los distintos archivos en el sistema operativo, esto nos permitirá controlar su acceso sobre cualquier parte del sistema operativo, ya que la filosofía UNIX indica que ``todo es un archivo'' (ArchWiki, n.d.). Según la Wiki de ArchLinux (n.d) se puede crear a un nuevo usuario y grupo de usuarios con los siguientes comandos de consola:
+
+\begin{lstlisting}[style=mystyle,language=bash]
+	useradd John
+	groupadd Accountants
+\end{lstlisting}
+
+Y para asignar entonces a un usuario a un grupo de usuarios se puede usar el siguiente comando de consola.
+
+\begin{lstlisting}[style=mystyle,language=bash]
+	useradd John
+	groupadd Accountants
+\end{lstlisting}
+
+Con este contexto se puede crear a los grupos de usuarios requeridos para instalar la base de datos y configurar RAC.
+
+\begin{lstlisting}[style=mystyle,language=bash]
+	groupadd -g 54327 asmdba
+	groupadd -g 54328 asmoper
+	groupadd -g 54329 asmadmin
+\end{lstlisting}
+
+Aca la bandera \texttt{-g} permite asignar un identificador a cada grupo de usuario, podemos entonces verificar el contenido del archivo \texttt{/etc/group} para ver a los usuarios creados y sus grupos correspondientes.
+
+\begin{lstlisting}[style=mystyle,language=bash]
+	cat /etc/group | grep asm
+	asmdba:x:54327:
+	asmoper:x:54328:
+	asmadmin:x:54329:
+\end{lstlisting}
+
+Estos nuevos usuarios tienen que pertenecer al grupo ya existente oracle, así que se va a modificar su grupo principal.
+
+\begin{lstlisting}[style=mystyle,language=bash]
+	usermod -G asmdba,asmoper,asmadmin oracle
+\end{lstlisting}
+
+Según Amoany (2021) podemos modificar la contraseña de un usuario con el comando \texttt{passwd}, en donde un usuario puede modificar únicamente su propia contraseña y un super-usuario puede modificar la contraseña de cualquier otro usuario en el sistema. Con este comando se modificara la contraseña para el usuario ya existente oracle.
+
+\begin{lstlisting}[style=mystyle,language=bash]
+	sudo passwd oracle
+	[sudo] password for node1:
+	Changing password for user oracle.
+	New password:
+	Retype new password:
+	passwd: all authentication tokens updated successfully.
+\end{lstlisting}
+
 \end{document}
