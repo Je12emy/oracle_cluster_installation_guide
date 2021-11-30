@@ -202,4 +202,27 @@ Según Amoany (2021) podemos modificar la contraseña de un usuario con el coman
 	passwd: all authentication tokens updated successfully.
 \end{lstlisting}
 
+\subsection{Configuración de Directorios}
+
+Siguiente se crearan los directorios necesarios para instalar el software de oracle, para esto se usara el comando mkdir, desde el directorio \texttt{root}. También se modificara al dueño del directorio y sus permisos con los comandos \texttt{chown} y \texttt{chmod}.
+
+\begin{lstlisting}[style=mystyle,language=bash]
+	mkdir -p /u01/app/19c/grid
+	mkdir -p /u01/app/oracle/product/19c/db_1
+	chown -R oracle:oinstall /u01
+	chmod -R 775 /u01/
+\end{lstlisting}
+
+Entonces para verificar los permisos en este directorio se puede utilizar al comando \texttt{ls} y unas banderas adicionales.
+
+\begin{lstlisting}[style=mystyle,language=bash]
+	ls -al /u01
+	total 4
+	drwxrwxr-x.  3 oracle oinstall   17 Oct 27 23:11 .
+	dr-xr-xr-x.  18 root   root 	4096 Oct 27 23:11 ..
+	drwxrwxr-x.  4 oracle oinstall   31 Oct 27 23:12 app
+\end{lstlisting}
+
+Según la ArchWiki (n.d) en la primera columna se pueden ver los permisos que sobre este directorio o archivo, en este caso el usuario tiene permisos de lectura, escritura y ejecución (rwx), los usuarios que pertenecen al grupo de el usuario actual tiene permisos de lectura, escritura y ejecución (rwx), finalmente otros usuarios solo tienen permisos de lectura y ejecución (r-x), en la tercera y cuarta columna se puede ver al usuario actual y grupo dueño de este archivo, aca el directorio actual es propiedad del usuario oracle y del grupo oinstal.
+
 \end{document}
