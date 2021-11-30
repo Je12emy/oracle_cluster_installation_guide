@@ -6,6 +6,30 @@
 \usepackage[spanish]{babel}
 \graphicspath{ {./resources/} }
 \usepackage{float}
+\usepackage{listings}
+\usepackage{xcolor}
+
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+
+\lstdefinestyle{mystyle}{
+    backgroundcolor=\color{backcolour},   
+    commentstyle=\color{codegreen},
+    keywordstyle=\color{magenta},
+    numberstyle=\tiny\color{codegray},
+    stringstyle=\color{codepurple},
+    basicstyle=\ttfamily\footnotesize,
+    breakatwhitespace=false,         
+    breaklines=true,                 
+    captionpos=b,                    
+    keepspaces=true,                 
+    showspaces=false,                
+    showstringspaces=false,
+    showtabs=false,                  
+    tabsize=2
+}
 
 \begin{document}
 
@@ -78,5 +102,16 @@ Después de habilitar el primer adaptador de red, seleccione ``Configure'' y en 
 \end{figure}
 
 Se aplicará esta misma configuración manual en el siguiente adaptador disponible, pero esta vez con una dirección IP de ``192.168.10.1/24'' con una salida de ``0.0.0.0'', finalmente para el último adaptador habilitaremos direccionamiento automático con DHCP. Se puede continuar con la instalación del sistema operativo, en la siguiente pantalla podemos seleccionar una contraseña para el usuario ``sudo'', para este ejercicio se usará ``root'' como contraseña.
+
+\section{Configuración del Sistema Operativo}
+
+Una vez en el ambiente de escritorio es necesario instalar software mediante el gestor de paquetes, en este caso esta distribución se encuentra basada en RHEL así que el gestor de paquete es yum.
+
+\begin{lstlisting}[style=mystyle,language=bash]
+	$ sudo yum update
+	$ sudo yum install -y oracle-database-preinstall-19c.x86_64
+	$ sudo yum install oracleasm-support
+	$ sudo yum install bind* --skip-broken
+\end{lstlisting}
 
 \end{document}
