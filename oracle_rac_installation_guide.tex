@@ -7,6 +7,7 @@
 \usepackage{float}
 \usepackage{listings}
 \usepackage{xcolor}
+\usepackage{subfigure}
 
 \definecolor{codegreen}{rgb}{0,0.6,0}
 \definecolor{codegray}{rgb}{0.5,0.5,0.5}
@@ -315,5 +316,112 @@ Con este nuevo nodo creado, puede ya ser iniciado y se cambiará su nombre o hos
 \end{lstlisting}
 
 Con esto listo, aún tenemos que cambiar las direcciones IP en nuestras interfaces de red para que se puedan comunicar con el otro nodo en la red. Con este cambio se puede iniciar el primer nodo y hacer un \texttt{ping} entre los dos.
+
+\subsection{Creación de Discos Compartidos}
+
+Oracle RAC comparte al mismo juego de discos, para simular esto, se creará un disco compartido entre máquinas virtuales. En la pestaña de almacenamiento de la máquina virtual se puede crear un nuevo disco.
+
+\begin{figure}[H]
+		\begin{center}
+			\includegraphics[width=0.95\textwidth]{vm_shared_disk_creation.png}
+		\end{center}
+		\caption{Creación de Discos Compartidos}
+\end{figure}
+
+Acá seleccioné la opción ``Create''.
+
+\begin{figure}[H]
+		\begin{center}
+			\includegraphics[width=0.95\textwidth]{vm_shared_disk_create.png}
+		\end{center}
+		\caption{Creación de un Nuevo Disco}
+\end{figure}
+
+Para el tipo de disco seleccioné VHD o ``Virtual Hard Disk''.
+
+\begin{figure}[H]
+		\begin{center}
+			\includegraphics[width=0.95\textwidth]{vm_shared_disk_creation_type.png}
+		\end{center}
+		\caption{Tipo de Disco por Crear}
+\end{figure}
+
+Finalmente seleccioné una ubicación de preferencia para almacenar el archivo y el nombre de este.
+
+\begin{figure}[H]
+		\begin{center}
+			\includegraphics[width=0.95\textwidth]{vm_shared_disk_creation_location.png}
+		\end{center}
+		\caption{Ubicación del Disco por Crear}
+\end{figure}
+
+Este mismo proceso debería ser creado hasta que se obtengan los siguientes discos.
+
+\begin{figure}[H]
+		\begin{center}
+			\includegraphics[width=0.95\textwidth]{vm_shared_disk_result.png}
+		\end{center}
+		\caption{Creación de Discos Compartidos Resultado}
+\end{figure}
+
+En la segunda máquina virtual en el diálogo para agregar nuevos discos, solo es necesario seleccionar los discos ya creados.
+
+\begin{figure}[H]
+		\begin{center}
+			\includegraphics[width=0.95\textwidth]{vm_shared_disk_mounting.png}
+		\end{center}
+		\caption{Montar un Disco ya Creado}
+\end{figure}
+
+Con los discos ya montados en ambos nodos, se puede iniciar cualquiera de los nodos y para verificar si los discos se encuentran disponibles con el siguiente comando.
+
+\begin{lstlisting}[style=mystyle,language=bash]
+	$ ls /dev/sd*
+	/dev/sda  /dev/sda1  /dev/sda2  /dev/sdb  /dev/sdc  /dev/sdd
+\end{lstlisting}
+
+Acá se encuentran a los discos \texttt{sdb}, \texttt{sdc} y \texttt{sdd}, estos con los discos que se acaban de montar, pero estos aun no se encuentran formateados, para esto usaremos el comando \texttt{fdisk}, esto ejecutara un programa interactivo para crear nuevas particiones en el disco.
+
+\begin{lstlisting}[style=mystyle,language=bash]
+	$ fdisk /dev/sdb
+	Welcome to fdisk (util-linux 2.23.2).
+
+	Changes will remain in memory only, until you decide to write them.
+	Be careful before using the write command.
+
+	Device does not contain a recognized partition table
+	Building a new DOS disklabel with disk identifier 0x28e162da.
+
+	Command (m for help): n
+	Partition type:
+	   p   primary (0 primary, 0 extended, 4 free)
+	   e   extended
+	Select (default p): p
+	Partition number (1-4, default 1): 1
+	First sector (2048-20971519, default 2048):
+	Using default value 2048
+	Last sector, +sectors or +size{K,M,G} (2048-20971519, default 20971519):
+	Using default value 20971519
+	Partition 1 of type Linux and of size 10 GiB is set
+	Command (m for help): w
+	The partition table has been altered!
+
+	Calling ioctl() to re-read partition table.
+	Syncing disks.
+\end{lstlisting}
+
+Después de esto si se vuelve a verificar a los discos montados se obtiene la siguiente salida.
+
+\begin{lstlisting}[style=mystyle,language=bash]
+	$ ls /dev/sd*
+	/dev/sda  /dev/sda1  /dev/sda2  /dev/sdb  /dev/sdb1  /dev/sdc  /dev/sdd
+\end{lstlisting}
+
+Acá se encuentra una partición nueva \texttt{/dev/sdb1}, si se repite este proceso con los 2 discos faltantes se obtiene entonces el siguiente resultado.
+
+\begin{lstlisting}[style=mystyle,language=bash]
+	$ ls /dev/sd*
+	/dev/sda  /dev/sda1  /dev/sda2  /dev/sdb  /dev/sdb1  /dev/sdc  /dev/sdc1  /dev/sdd  /dev/sdd1
+\end{lstlisting}
 
 \end{document}
