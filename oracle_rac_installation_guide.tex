@@ -510,8 +510,234 @@ En este directorio compartido se deben descargar los dos zips con el software po
 
 \section{Instalación de Componentes de Software}
 
-Con la configuración básica es posible instalar los componentes de software de Oracle en los nodos del cluster.
+Con la configuración básica es posible instalar los componentes de software de Oracle en los nodos del clúster.
 
+\subsection{Instalación de Grid}
 
+Con todos los requerimientos listos, se puede empezar la instalación de \texttt{Grid Infraestructure}, esto se hará en el nodo en el cual se ha copiado el directorio de instalación de \texttt{grid}, primero se ejecutara un script de verificación en la carpeta copiada.
+
+\begin{lstlisting}[style=mystyle,language=bash]
+	$ ./runcluvfy.sh stage -pre crsinst -n rac1,rac2 -verbose
+\end{lstlisting}
+
+Siguiente se iniciará la instalación de \texttt{Grid}.
+
+\begin{lstlisting}[style=mystyle,language=bash]
+	$ export DISPLAY=:0.0
+	$ xhost +
+	$ ./gridSetup.sh
+\end{lstlisting}
+
+En esta herramienta gráfica se ejecutarán los siguientes pasos.
+
+\begin{figure}[H]
+		\begin{center}
+			\includegraphics[width=0.80\textwidth]{grid_install_01_initial_grid_install.png}
+		\end{center}
+		\caption{Configuración de Ambiente de Instalación para Grid}
+\end{figure}
+
+\begin{figure}[H]
+		\begin{center}
+			\includegraphics[width=0.80\textwidth]{grid_install_02_cluster_configuration.png}
+		\end{center}
+		\caption{Configuración de Ambiente para Cluster}
+\end{figure}
+
+\begin{figure}[H]
+		\begin{center}
+			\includegraphics[width=0.80\textwidth]{grid_install_03_grid_plug_and_play.png}
+		\end{center}
+		\caption{Configuración de Red SCAN}
+\end{figure}
+
+\begin{figure}[H]
+		\begin{center}
+			\includegraphics[width=0.80\textwidth]{grid_install_04_cluster_node_information.png}
+		\end{center}
+		\caption{Configuración de Nodos}
+\end{figure}
+
+\begin{figure}[H]
+		\begin{center}
+			\includegraphics[width=0.80\textwidth]{grid_install_04_01_cluster_node_information_add_node.png}
+		\end{center}
+		\caption{Configuración de Nodos: Agregar un Nuevo Nodo}
+\end{figure}
+
+\begin{figure}[H]
+		\begin{center}
+			\includegraphics[width=0.80\textwidth]{grid_install_04_2_cluster_node_information_test_connectivity.png}
+		\end{center}
+		\caption{Configuración de Nodos: Probar Conexión}
+\end{figure}
+
+\begin{figure}[H]
+		\begin{center}
+			\includegraphics[width=0.80\textwidth]{grid_install_04_3_cluster_node_information_success.png}
+		\end{center}
+		\caption{Configuración de Nodos: Probar Conexión Resultado}
+\end{figure}
+
+\begin{figure}[H]
+		\begin{center}
+			\includegraphics[width=0.80\textwidth]{grid_install_05_network_interface_usage.png}
+		\end{center}
+		\caption{Configuración de Redes}
+\end{figure}
+
+\begin{figure}[H]
+		\begin{center}
+			\includegraphics[width=0.80\textwidth]{grid_install_06_storage_options.png}
+		\end{center}
+		\caption{Configuración de Almacenamiento}
+\end{figure}
+
+\begin{figure}[H]
+		\begin{center}
+			\includegraphics[width=0.80\textwidth]{grid_install_07_create_grid_management_infraestructure.png}
+		\end{center}
+		\caption{Configuración de ``Image Repository''}
+\end{figure}
+
+\begin{figure}[H]
+		\begin{center}
+			\includegraphics[width=0.80\textwidth]{grid_install_08_create_asm_group.png}
+		\end{center}
+		\caption{Configuración de Discos de ASM}
+\end{figure}
+
+\begin{figure}[H]
+		\begin{center}
+			\includegraphics[width=0.80\textwidth]{grid_install_08_create_asm_group_change_discovery_path.png}
+		\end{center}
+		\caption{Configuración de Discos de ASM: Descubrimiento de Discos}
+\end{figure}
+
+\begin{figure}[H]
+		\begin{center}
+			\includegraphics[width=0.80\textwidth]{grid_install_09_ASM_password.png}
+		\end{center}
+		\caption{Configuración de Contraseñas}
+\end{figure}
+
+\begin{figure}[H]
+		\begin{center}
+			\includegraphics[width=0.80\textwidth]{grid_install_10_failure_issolation.png}
+		\end{center}
+		\caption{Configuración de Fallos}
+\end{figure}
+
+\begin{figure}[H]
+		\begin{center}
+			\includegraphics[width=0.80\textwidth]{grid_install_11_management_options.png}
+		\end{center}
+		\caption{Configuración de Manejo en la Nube}
+\end{figure}
+
+\begin{figure}[H]
+		\begin{center}
+			\includegraphics[width=0.80\textwidth]{grid_install_12_operating_system_groups.png}
+		\end{center}
+		\caption{Configuración de Usuario de Instalación}
+\end{figure}
+
+\begin{figure}[H]
+		\begin{center}
+			\includegraphics[width=0.80\textwidth]{grid_install_13_installation_location.png}
+		\end{center}
+		\caption{Configuración de Directorio de Instalación}
+\end{figure}
+
+\begin{figure}[H]
+		\begin{center}
+			\includegraphics[width=0.80\textwidth]{grid_install_14_create_inventory.png}
+		\end{center}
+		\caption{Configuración de Directorio ``Oracle Inventory''}
+\end{figure}
+
+\begin{figure}[H]
+		\begin{center}
+			\includegraphics[width=0.80\textwidth]{grid_install_15_root_script_execution.png}
+		\end{center}
+		\caption{Ejecución de Scripts Intermedios}
+\end{figure}
+
+\begin{figure}[H]
+		\begin{center}
+			\includegraphics[width=0.80\textwidth]{grid_install_16_pre_requisite_checks.png}
+		\end{center}
+		\caption{Verificación de Configuración}
+\end{figure}
+
+\begin{figure}[H]
+		\begin{center}
+			\includegraphics[width=0.80\textwidth]{grid_install_18_install.png}
+		\end{center}
+		\caption{Instalación}
+\end{figure}
+
+\begin{figure}[H]
+		\begin{center}
+			\includegraphics[width=0.80\textwidth]{grid_install_18_1_install_scripts.png}
+		\end{center}
+		\caption{Scripts Intermedios por Ejecutar en Consola}
+\end{figure}
+
+Con \texttt{Grid} ya instalado, se puede verificar su estado en cualquiera de los dos nodos con varias utilizades instadas.
+
+\begin{lstlisting}[style=mystyle,language=bash]
+	$ crsctl check crs
+	CRS-4638: Oracle High Availability Services is online
+	CRS-4537: Cluster Ready Services is online
+	CRS-4529: Cluster Synchronization Services is online
+	CRS-4533: Event Manager is online
+	$ srvctl config scan
+	SCAN name: node-scan, Network: 1
+	Subnet IPv4: 192.168.24.0/255.255.255.0/enp0s3, static
+	Subnet IPv6: 
+	SCAN 1 IPv4 VIP: 192.168.24.41
+	SCAN VIP is enabled.
+	SCAN 2 IPv4 VIP: 192.168.24.42
+	SCAN VIP is enabled.
+	SCAN 3 IPv4 VIP: 192.168.24.43
+	SCAN VIP is enabled.
+	$ srvctl config scan_listener
+	SCAN Listeners for network 1:
+	Registration invited nodes: 
+	Registration invited subnets: 
+	Endpoints: TCP:1521
+	SCAN Listener LISTENER_SCAN1 exists
+	SCAN Listener is enabled.
+	SCAN Listener LISTENER_SCAN2 exists
+	SCAN Listener is enabled.
+	SCAN Listener LISTENER_SCAN3 exists
+	SCAN Listener is enabled.
+\end{lstlisting}
+
+Adicionalmente se pueden verificar los procesos de fondo.
+
+\begin{lstlisting}[style=mystyle,language=bash]
+	$ ps -ef | grep pmon
+	oracle    6697     1  0 02:09 ?        00:00:02 asm_pmon_+ASM1
+	oracle   31294  3729  0 15:28 pts/0    00:00:00 grep --color=auto pmon
+	$ ps -ef | grep pmon
+	root     14825 30659  0 15:28 pts/0    00:00:00 grep --color=auto pmon
+	oracle   23575     1  0 03:30 ?        00:00:02 asm_pmon_+ASM2
+	$ ps -ef | grep pmon
+	oracle    6697     1  0 02:09 ?        00:00:02 asm_pmon_+ASM1
+	oracle   31294  3729  0 15:28 pts/0    00:00:00 grep --color=auto pmon
+	$ ps -ef | grep d.bin
+	root      4483     1  0 02:05 ?        00:04:41 /u01/software/LINUX.X64_193000_grid_home/bin/ohasd.bin reboot BLOCKING_STACK_LOCALE_OHAS=AMERICAN_AMERICA.AL32UTF8
+	oracle    5287     1  0 02:06 ?        00:02:54 /u01/software/LINUX.X64_193000_grid_home/bin/evmd.bin
+	oracle    5289     1  0 02:06 ?        00:01:23 /u01/software/LINUX.X64_193000_grid_home/bin/mdnsd.bin
+	oracle    5334     1  0 02:06 ?        00:01:25 /u01/software/LINUX.X64_193000_grid_home/bin/gpnpd.bin
+	oracle    5441     1  0 02:06 ?        00:03:04 /u01/software/LINUX.X64_193000_grid_home/bin/gipcd.bin
+	root      5704     1  1 02:06 ?        00:13:29 /u01/software/LINUX.X64_193000_grid_home/bin/osysmond.bin
+	oracle    5752     1  0 02:06 ?        00:05:10 /u01/software/LINUX.X64_193000_grid_home/bin/ocssd.bin  -S 1
+	root      5987     1  0 02:07 ?        00:03:03 /u01/software/LINUX.X64_193000_grid_home/bin/octssd.bin reboot
+	root      6873     1  0 02:09 ?        00:05:31 /u01/software/LINUX.X64_193000_grid_home/bin/crsd.bin reboot
+	oracle   32586  3729  0 15:31 pts/0    00:00:00 grep --color=auto d.bin
+\end{lstlisting}
 
 \end{document}
