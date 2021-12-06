@@ -151,7 +151,7 @@ En este caso, al visitar la dirección \texttt{127.0.0.1}, nuestro sistema opera
 	192.168.24.43 node-scan.localdomain node-scan
 \end{lstlisting}
 
-Acá se esta mapeando los nombres de dominio con las redes a las cuales pertenece cada adaptador de red con el cual cuenta la máquina virtual, por esto mismo las direcciones proporcionadas se encuentran en la misma red.
+Acá se está mapeando los nombres de dominio con las redes a las cuales pertenece cada adaptador de red con el cual cuenta la máquina virtual, por esto mismo las direcciones proporcionadas se encuentran en la misma red.
 
 \subsection{Configuración de Usuarios}
 
@@ -177,7 +177,7 @@ Con este contexto se puede crear a los grupos de usuarios requeridos para instal
 	groupadd -g 54329 asmadmin
 \end{lstlisting}
 
-Aca la bandera \texttt{-g} permite asignar un identificador a cada grupo de usuario, podemos entonces verificar el contenido del archivo \texttt{/etc/group} para ver a los usuarios creados y sus grupos correspondientes.
+Acá la bandera \texttt{-g} permite asignar un identificador a cada grupo de usuario, podemos entonces verificar el contenido del archivo \texttt{/etc/group} para ver a los usuarios creados y sus grupos correspondientes.
 
 \begin{lstlisting}[style=mystyle,language=bash]
 	cat /etc/group | grep asm
@@ -293,7 +293,7 @@ Los nodos necesitan sincronizar los relojes entre sí, para esto existe el proto
 \end{lstlisting}
 
 Acá primero se habilita y reinicia el servicio de \texttt{chrony}, una implementación del protocolo NTP, mediante su proceso de fondo \texttt{chronyd}, por otro lado se modifica la configuración de \texttt{chronyc} con la línea de comando \texttt{chronyc}.
-Con el comando burst de chronyc le indicamos a chrony el mínimo de buenas medidas para sincronizar con otro nodo. Con la opción makestep le indicamos a chrony que en caso de que los nodos se encuentren desincronizados, que realice correcciones inmediatas en el nodo.
+Con el comando \texttt{burst} de \texttt{chronyc} le indicamos a \texttt{chrony} el mínimo de buenas medidas para sincronizar con otro nodo. Con la opción \texttt{makestep} le indicamos a \texttt{chrony} que en caso de que los nodos se encuentren desincronizados, que realice correcciones inmediatas en el nodo.
 
 \subsection{Clonado de la Máquina Virtual}
 
@@ -456,7 +456,7 @@ Siguiente se montará \texttt{ASM} al sistema.
 	Mounting ASMlib driver filesystem: /dev/oracleasm
 \end{lstlisting}
 
-Con \texttt{ASM} ya montado al sistema, se puede crear un disco este, acá se utilizarán los discos que fueron formateados previamente.
+Con \texttt{ASM} ya montado al sistema, se puede crear un disco, acá se utilizarán los discos que fueron formateados previamente.
 
 \begin{lstlisting}[style=mystyle,language=bash]
 	$ sudo oracleasm createdisk DISK1 /dev/sdb1
@@ -464,7 +464,7 @@ Con \texttt{ASM} ya montado al sistema, se puede crear un disco este, acá se ut
 	Instantiating disk: done
 \end{lstlisting}
 
-Con el disco ya creado podemos buscarlo y listarlo.
+Con el disco ya creado se puede buscar y listar.
 
 \begin{lstlisting}[style=mystyle,language=bash]
 	$ sudo oracleasm scandisks
@@ -520,6 +520,12 @@ Con todos los requerimientos listos, se puede empezar la instalación de \texttt
 	$ ./runcluvfy.sh stage -pre crsinst -n rac1,rac2 -verbose
 \end{lstlisting}
 
+Antes de empezar con la instalación, es necesario habilitar conexiones por \texttt{ssh} sin contraseña en ambos nodos, para esto se ejecura el siguiente script.
+
+\begin{lstlisting}[style=mystyle,language=bash]
+	./sshUserSetup.sh -user grid -hosts "node1 node2" -noPromptPassphrase -confirm -
+advanced
+\end{lstlisting}
 Siguiente se iniciará la instalación de \texttt{Grid}.
 
 \begin{lstlisting}[style=mystyle,language=bash]
@@ -826,5 +832,187 @@ Igual al paso anterior, se copiará la carpeta de Oracle DB al directorio \textt
 		\end{center}
 		\caption{Resultado de Instalación de Oracle DB}
 \end{figure}
+
+\section{Creación de la Base de Datos}
+
+Con el motor ya instalado, se puede crear la base de datos para ambos nodos.
+
+\subsection{Creación de Discos de ASM}
+
+Primero se tiene que crear los discos para \texttt{ASM}, para esto se puede ejecutar \texttt{asmca} en una consola.
+
+
+\begin{figure}[H]
+		\begin{center}
+			\includegraphics[width=0.80\textwidth]{db_creation_1_asm_disk_creation_1_menu.png}
+		\end{center}
+		\caption{Creación de Discos de ASM}
+\end{figure}
+
+
+\begin{figure}[H]
+		\begin{center}
+			\includegraphics[width=0.80\textwidth]{db_creation_1_asm_disk_creation_2_data.png}
+		\end{center}
+		\caption{Creación de un Nuevo Disco ``Data''}
+\end{figure}
+
+
+\begin{figure}[H]
+		\begin{center}
+			\includegraphics[width=0.80\textwidth]{db_creation_1_asm_disk_creation_3_ready.png}
+		\end{center}
+		\caption{Lista de Discos ASM}
+\end{figure}
+
+\begin{figure}[H]
+		\begin{center}
+			\includegraphics[width=0.80\textwidth]{db_creation_1_asm_disk_creation_4_archive_log.png}
+		\end{center}
+		\caption{Creación de un nuevo Disco ``ARCHIVELOG''}
+\end{figure}
+
+\begin{figure}[H]
+		\begin{center}
+			\includegraphics[width=0.80\textwidth]{db_creation_1_asm_disk_creation_5_ready.png}
+		\end{center}
+		\caption{Lista de Discos ASM}
+\end{figure}
+
+\subsection{Oracle Configuration Asistant}
+
+Con los discos listos se puede iniciar la creación de la base de datos con el comando \texttt{dbca}.
+
+
+\begin{figure}[H]
+		\begin{center}
+			\includegraphics[width=0.80\textwidth]{db_creation_2_database_operation.png}
+		\end{center}
+		\caption{DBCA Operaciones Disponibles}
+\end{figure}
+
+
+\begin{figure}[H]
+		\begin{center}
+			\includegraphics[width=0.80\textwidth]{db_creation_3_creation_mode.png}
+		\end{center}
+		\caption{Tipo de Configuración de Instalación}
+\end{figure}
+
+
+\begin{figure}[H]
+		\begin{center}
+			\includegraphics[width=0.80\textwidth]{db_creation_4_deployment_type.png}
+		\end{center}
+		\caption{Tipo de Instalación}
+\end{figure}
+
+
+\begin{figure}[H]
+		\begin{center}
+			\includegraphics[width=0.80\textwidth]{db_creation_5_nodes_selection.png}
+		\end{center}
+		\caption{Nodos de RAC}
+\end{figure}
+
+
+\begin{figure}[H]
+		\begin{center}
+			\includegraphics[width=0.80\textwidth]{db_creation_6_database_identification.png}
+		\end{center}
+		\caption{Identificador de la Base de Datos}
+\end{figure}
+
+
+\begin{figure}[H]
+		\begin{center}
+			\includegraphics[width=0.80\textwidth]{db_creation_7_storage_option.png}
+		\end{center}
+		\caption{Tipo de Almacenamiento}
+\end{figure}
+
+
+\begin{figure}[H]
+		\begin{center}
+			\includegraphics[width=0.80\textwidth]{db_creation_8_flash_recovery_options.png}
+		\end{center}
+		\caption{Configuración del FRA}
+\end{figure}
+
+
+\begin{figure}[H]
+		\begin{center}
+			\includegraphics[width=0.80\textwidth]{db_creation_9_data_vaut_options.png}
+		\end{center}
+		\caption{Configuración de Oracle Database Vault}
+\end{figure}
+
+
+\begin{figure}[H]
+		\begin{center}
+			\includegraphics[width=0.80\textwidth]{db_creation_10_configuration_options.png}
+		\end{center}
+		\caption{Configuración General de la Base de Datos}
+\end{figure}
+
+
+\begin{figure}[H]
+		\begin{center}
+			\includegraphics[width=0.80\textwidth]{db_creation_11_management_options.png}
+		\end{center}
+		\caption{Configuración de Opciones de Manejo}
+\end{figure}
+
+
+\begin{figure}[H]
+		\begin{center}
+			\includegraphics[width=0.80\textwidth]{db_creation_12_user_credentials.png}
+		\end{center}
+		\caption{Configuración de Credenciales}
+\end{figure}
+
+
+\begin{figure}[H]
+		\begin{center}
+			\includegraphics[width=0.80\textwidth]{db_creation_13_creation_options.png}
+		\end{center}
+		\caption{Configuración de Opciones de Creación de la Base de Datos}
+\end{figure}
+
+
+\begin{figure}[H]
+		\begin{center}
+			\includegraphics[width=0.80\textwidth]{db_creation_14_pre_requisite_check.png}
+		\end{center}
+		\caption{Verificación de Instalación}
+\end{figure}
+
+
+\begin{figure}[H]
+		\begin{center}
+			\includegraphics[width=0.80\textwidth]{db_creation_14_pre_requisite_check_done.png}
+		\end{center}
+		\caption{Resumen de Instalación}
+\end{figure}
+
+
+\begin{figure}[H]
+		\begin{center}
+			\includegraphics[width=0.80\textwidth]{db_creation_15_progress.png}
+		\end{center}
+		\caption{Proceso de Instalación}
+\end{figure}
+
+Con este paso completado, la base de datos se encuentra lista, se puede verificar la conexión de los nodos con la siguiente sentencia de SQL en cualquiera de los nodos.
+
+
+\begin{lstlisting}[style=mystyle,language=sql]
+	SELECT inst_name FROM v$active_instances;
+
+	INST_NAME
+	-------------------------
+	node2.localdomain:node1
+	node1.localdomain:node2
+\end{lstlisting}
 
 \end{document}
