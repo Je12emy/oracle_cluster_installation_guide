@@ -11,6 +11,8 @@
 \usepackage{hyperref}
 \usepackage{biblatex}
 \usepackage{csquotes}
+\usepackage{datetime}
+\newdate{date}{11}{12}{2021}
 \bibliography{rac_bib.bib}
 
 
@@ -117,10 +119,10 @@ captionpos=b
 
 \begin{document}
 
-\title{Oracle RAC: Una Guía de Instalación para el Usuario Final}
+\title{Oracle RAC: Una Guía de Instalación para el Humano}
 \author{Jeremy Zelaya Rodríguez}
 
-\date{\today} 
+\date{\displaydate{date}}
 
 \maketitle
 \tableofcontents
