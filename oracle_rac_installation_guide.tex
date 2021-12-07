@@ -69,7 +69,16 @@ tabsize=2, % sets default tabsize to 2 spaces
 title=\lstname % show the filename of files included with \lstinputlisting; also try caption instead of title
 }
 %END of listing package%
- 
+
+ \hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    filecolor=magenta,      
+    urlcolor=cyan,
+    pdftitle={Overleaf Example},
+    pdfpagemode=FullScreen,
+}
+
 \definecolor{darkgray}{rgb}{.4,.4,.4}
 \definecolor{purple}{rgb}{0.65, 0.12, 0.82}
  
@@ -561,7 +570,7 @@ Solo resta iniciar la otra máquina virtual y configurar \texttt{ASM}, únicamen
 
 \subsection{Copiar el Directorio de Instalación de Grid}
 
-Siguiente es necesario descargar Grid y Oracle DB 19c, estos pueden ser descargados desde él \hyperlink{https://www.oracle.com/in/database/technologies/oracle19c-linux-downloads.html}{sitio oficial de Oracle} como zips, entonces se debe de configurar un directorio compartido entre las máquinas virtuales y el sistema operativo huésped.
+Siguiente es necesario descargar Grid y Oracle DB 19c, estos pueden ser descargados desde él \href{https://www.oracle.com/in/database/technologies/oracle19c-linux-downloads.html}{sitio oficial de Oracle} como zips, entonces se debe de configurar un directorio compartido entre las máquinas virtuales y el sistema operativo huésped.
 
 \begin{figure}[H]
 		\begin{center}
@@ -1097,7 +1106,7 @@ Con este paso completado, la base de datos se encuentra lista, se puede verifica
 	node1.localdomain:node2
 \end{lstlisting}
 
-Finalmente para habilitar la comutación de fallas sera necesario realizar los siguientes cambios sobre el \texttt{tnsnames.ora} en ambos nodos.
+Finalmente para habilitar la conmutación de fallas será necesario realizar los siguientes cambios sobre el \texttt{tnsnames.ora} en ambos nodos.
 
 
 \begin{lstlisting}[style=mystyle]
@@ -1118,7 +1127,7 @@ NODE =
 
 \section{Aplicación}
 
-Proporcionar una, guía de programación se encuentra fuera del alcance de esta, guia, por lo cual únicamente se proporcionaran los pasos necesarios para establecer una conexión con la tecnología seleccionada para crear el aplicativo, para este aplicativo se estará utilizando Node.js y Nest.js para preparar un servidor básico de GraphQL para consumir la base de datos, para esto se realizará un CRUD sobre la tabla \texttt{EMPLOYEES} del esquema `HR`. 
+Proporcionar una, guía de programación se encuentra fuera del alcance de esta guía, por lo cual únicamente se proporcionaran los pasos necesarios para establecer una conexión con la tecnología seleccionada para crear el aplicativo, para este aplicativo se estará utilizando Node.js y Nest.js para preparar un servidor básico de GraphQL para consumir la base de datos, para esto se realizará un CRUD sobre la tabla \texttt{EMPLOYEES} del esquema `HR`. 
 
 \subsection{Instalación de Requisitos}
 
@@ -1144,7 +1153,7 @@ Para crear una conexión con una base de datos, se deben de utilizar los ``drive
 
 \subsection{Configuración de Conexión}
 
-Acá la dependencia \texttt{oracledb} es la cual permite establecer una conexión con Oracle, esta adicionalmente requiere la instalación, estos pueden ser encontrados en el \hyperlink{https://www.oracle.com/database/technologies/instant-client/downloads.html}{sitio oficial de Oracle} los cuales deben de ser agregados al \texttt{PATH} del servidor. La configuración de la conexión entre el servidor y el clúster se realiza desde el archivo \texttt{app.module.ts}
+Acá la dependencia \texttt{oracledb} es la cual permite establecer una conexión con Oracle, esta adicionalmente requiere la instalación, estos pueden ser encontrados en el \href{https://www.oracle.com/database/technologies/instant-client/downloads.html}{sitio oficial de Oracle} los cuales deben de ser agregados al \texttt{PATH} del servidor. La configuración de la conexión entre el servidor y el clúster se realiza desde el archivo \texttt{app.module.ts}
 
 \begin{lstlisting}[style=mystyle,language=javascript]
 	@Module({
@@ -1174,7 +1183,7 @@ Acá la dependencia \texttt{oracledb} es la cual permite establecer una conexió
 	export class AppModule {}
 \end{lstlisting}
 
-Con estos pasos básicos es posible continuar desarrollando el aplicativo con Nest.js, aun así se estará proporcionando un \hyperlink{https://github.com/Je12emy/oracle_cluster}{repositorio con un aplicativo básico} para poder interactuar con la base de datos.
+Con estos pasos básicos es posible continuar desarrollando el aplicativo con Nest.js, aun así se estará proporcionando un \href{https://github.com/Je12emy/oracle_cluster}{repositorio con un aplicativo básico} para poder interactuar con la base de datos.
 
 \printbibliography
 
